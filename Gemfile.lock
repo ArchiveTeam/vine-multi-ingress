@@ -1,0 +1,57 @@
+GIT
+  remote: git://github.com/yipdw/analysand.git
+  revision: bc62e67031bf7e813e49538669f7434f2efd9ee9
+  specs:
+    analysand (4.0.0)
+      celluloid (~> 0.16.0)
+      celluloid-io
+      http_parser.rb
+      json
+      json-stream
+      net-http-persistent (~> 3.0.0)
+      rack
+      yajl-ruby
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    celluloid (0.16.0)
+      timers (~> 4.0.0)
+    celluloid-io (0.16.2)
+      celluloid (>= 0.16.0)
+      nio4r (>= 1.1.0)
+    concurrent-ruby (1.0.2)
+    connection_pool (2.2.0)
+    foreman (0.82.0)
+      thor (~> 0.19.1)
+    hitimes (1.2.4)
+    http_parser.rb (0.6.0)
+    json (2.0.2)
+    json-stream (0.2.1)
+    net-http-persistent (3.0.0)
+      connection_pool (~> 2.2)
+    nio4r (1.2.1)
+    rack (2.0.1)
+    rack-protection (1.5.3)
+      rack
+    redis (3.3.1)
+    sidekiq (4.2.3)
+      concurrent-ruby (~> 1.0)
+      connection_pool (~> 2.2, >= 2.2.0)
+      rack-protection (>= 1.5.0)
+      redis (~> 3.2, >= 3.2.1)
+    thor (0.19.1)
+    timers (4.0.4)
+      hitimes
+    yajl-ruby (1.2.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  analysand!
+  foreman
+  sidekiq
+
+BUNDLED WITH
+   1.11.2
