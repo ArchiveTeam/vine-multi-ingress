@@ -1,4 +1,8 @@
-{ "_id": "https://vine.co/v/foobar",
+{ "_id": "video:https://vine.co/v/foobar",
+
+  // the URL of the video
+  // you could also get this by _id munging, but a separate field makes extraction easier
+  "url": "https://vine.co/v/foobar",
 
   // tweet IDs; can also be []/null/undefined if we didn't find the Vine via Twitter
   "tweets": ["https://twitter.com/badegg/status/12345", "https://twitter.com/badegg/status/56789"],
