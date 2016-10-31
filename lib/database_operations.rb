@@ -31,7 +31,7 @@ module DatabaseOperations
       doc['tweets'] |= tweet_markers
 
       if old_length != doc['tweets'].length
-        db.put!(doc_id, doc, $creds)
+        db.put!(doc_id, doc, credentials)
       end
 
       true
