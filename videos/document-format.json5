@@ -4,8 +4,15 @@
   // you could also get this by _id munging, but a separate field makes extraction easier
   "url": "https://vine.co/v/foobar",
 
-  // tweet IDs; can also be []/null/undefined if we didn't find the Vine via Twitter
-  "tweets": ["https://twitter.com/badegg/status/12345", "https://twitter.com/badegg/status/56789"],
+  // tweet IDs or URLs
+  // to reconstruct a tweet URL from the ID, you can use twitter.com's statuses resource:
+  //
+  // $ curl -sI https://twitter.com/statuses/791313392115998720 | grep location
+  // location: https://twitter.com/twitter/status/791313392115998720
+  "tweets": [
+  	{ "id": "1234567890" },
+	{ "url": "https://twitter.com/badegg/status/12345" }
+  ],
 
   // ingress date
   "created_at": "2016-10-30T00:00:00Z",
