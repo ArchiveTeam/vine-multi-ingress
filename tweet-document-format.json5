@@ -1,0 +1,8 @@
+// to reconstruct a tweet URL from the ID, you can use twitter.com's statuses resource:
+//
+// $ curl -sI https://twitter.com/statuses/791313392115998720 | grep location
+// location: https://twitter.com/twitter/status/791313392115998720
+{ "_id": "(uuid)", "tweet_id": 12345, "vine_url": "https://vine.co/v/foobar" }
+
+// representation 2, if a tweet URL is present:
+{ "_id": "(uuid)", "tweet_url": "https://twitter.com/badegg/status/12345", "vine_url": "https://vine.co/v/foobar" }
