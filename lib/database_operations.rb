@@ -19,11 +19,12 @@ module DatabaseOperations
     end
 
     if tweet_id
-      db.put!(format('tweet:%s', SecureRandom.uuid), { tweet_id: tweet_id, vine_url: vine_url }, credentials)
+      db.put!(format('tweet:%s', tweet_id), { tweet_id: tweet_id, vine_url: vine_url }, credentials)
     end
 
     if tweet_url
-      db.put!(format('tweet:%s', SecureRandom.uuid), { tweet_url: tweet_url, vine_url: vine_url }, credentials)
+      tweet_id = tweet_url.scan(/[0-9]+/).last
+      db.put!(format('tweet:%s', tweet_id), { tweet_url: tweet_url, vine_url: vine_url }, credentials)
     end
   end
 end
