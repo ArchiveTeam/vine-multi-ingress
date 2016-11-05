@@ -50,11 +50,15 @@ module Inkdroid
 
         # Some URLs have an anchor or query at the end that trips us up, so
         # remove it.
-        uri = URI(vine_url)
-        uri.fragment = nil
-        uri.query = nil
+        begin
+          uri = URI(vine_url)
+          uri.fragment = nil
+          uri.query = nil
 
-        Post.perform_async(tweet_id, uri.to_s, counter, db, credentials)
+          Post.perform_async(tweet_id, uri.to_s, counter, db, credentials)
+        rescue URI::InvalidURIError
+          # whatever, skip it and move on
+        end
       end
 
       while counter.value > 0
