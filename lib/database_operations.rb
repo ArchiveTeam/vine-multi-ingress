@@ -11,7 +11,7 @@ module DatabaseOperations
   end
 
   def logger
-    @logger ||= Logger.new($stderr)
+    @logger ||= Logger.new($stderr).tap { |l| l.level = ENV['LOG_LEVEL'] || :debug }
   end
 
   def log(doc_id, resp)
