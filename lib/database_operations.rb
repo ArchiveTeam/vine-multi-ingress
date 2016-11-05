@@ -13,7 +13,7 @@ module DatabaseOperations
   def logger
     @logger ||= Logger.new($stderr)
   end
-  
+
   def log(doc_id, resp)
     logger.info(format('PUT %s %d', doc_id, resp.code))
   end
@@ -27,7 +27,9 @@ module DatabaseOperations
     log(doc_id, resp)
 
     if tweet_id
-      db.put(format('tweet:%s:%s', tweet_id, vine_slug), { tweet_id: tweet_id, vine_url: vine_url }, credentials)
+      tweet_doc_id = format('tweet:%s:%s', tweet_id, vine_slug)
+      resp = db.put(tweet_doc_id, { tweet_id: tweet_id, vine_url: vine_url }, credentials)
+      log(tweet_doc_id, resp)
     end
 
     if tweet_url
@@ -42,7 +44,7 @@ module DatabaseOperations
 
     if profile_url
       user_id = profile_url.split('/').last
-      db.put(format('user:%d:%s', user_id, vine_slug), { vine_url: vine_url, profile_url: profile_url }, credentials) 
+      db.put(format('user:%d:%s', user_id, vine_slug), { vine_url: vine_url, profile_url: profile_url }, credentials)
     end
   end
 end
