@@ -41,7 +41,10 @@ module Inkdroid
 
       lines.each do |line|
         tweet_id, vine_url = line.split(/\s+/, 2)
-        next unless vine_url
+        if !vine_url
+          counter.decrement
+          next
+        end
 
         # Some URLs have a trailing / that needs to be removed.  Ditto for
         # /embed.
@@ -58,6 +61,7 @@ module Inkdroid
           Post.perform_async(tweet_id, uri.to_s, counter, db, credentials)
         rescue URI::InvalidURIError
           # whatever, skip it and move on
+          counter.decrement
         end
       end
 
