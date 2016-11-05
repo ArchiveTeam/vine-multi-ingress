@@ -41,6 +41,7 @@ module Inkdroid
 
       lines.each do |line|
         tweet_id, vine_url = line.split(/\s+/, 2)
+        next unless vine_url
 
         # Some URLs have a trailing / that needs to be removed.  Ditto for
         # /embed.
