@@ -8,6 +8,8 @@ require 'csv'
 require 'time'
 require 'logger'
 require 'json'
+require 'sucker_punch'
+require 'concurrent'
 
 require_relative '../database'
 require_relative '../database_operations'
@@ -17,8 +19,21 @@ $log = Logger.new($stderr)
 include Database
 include DatabaseOperations
 
+$counter = Concurrent::AtomicFixnum.new(0)
+
+class Post
+  include SuckerPunch::Job
+  workers 16
+
+  def perform(*args)
+    submit_video_with_retry(*args)
+    $counter.decrement
+  end
+end
+
 def add_video(col, ts, profile_url: nil)
-  submit_video_with_retry(vine_url: col, db: db, credentials: credentials, requested_at: ts, profile_url: profile_url)
+  $counter.increment
+  Post.perform_async(vine_url: col, db: db, credentials: credentials, requested_at: ts, profile_url: profile_url)
 end
 
 def add_videos_from_user_profile(col, ts)
@@ -79,4 +94,8 @@ CSV.open(ARGV[0], 'r', headers: true).each do |row|
   ts = Time.parse(row[0]).utc.iso8601
 
   row[1..-1].each { |col| interpret_url(col, ts) }
+end
+
+while $counter.value > 0
+  sleep 0.1
 end
