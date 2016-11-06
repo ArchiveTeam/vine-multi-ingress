@@ -47,7 +47,27 @@ def add_videos_from_user_profile(col, ts)
   end
 end
 
-def add_videos_from_tweet(col)
+def add_videos_from_tweet(tweet_url, ts)
+  $log.info "Fetching #{tweet_url}"
+  out = `curl -s #{tweet_url}`
+  vine_results = out.scan %r{https?://vine.co/#{URI::REGEXP::PATTERN::URIC}+}
+
+  vine_results.uniq.each { |result| interpret_url(result, ts) }
+end
+
+def interpret_url(url, ts)
+  case url
+  when %r{vine.co/v/.+} then
+    add_video(url, ts)
+  when %r{vine.co/u/.+} then
+    add_videos_from_user_profile(url, ts)
+  when %r{twitter.com/.+} then
+    add_videos_from_tweet(url, ts)
+  when %r{\s*} then
+    nil
+  else
+    $log.warn(format("Don't know how to handle input <%s>; skipping", col))
+  end
 end
 
 CSV.open(ARGV[0], 'r', headers: true).each do |row|
@@ -56,22 +76,7 @@ CSV.open(ARGV[0], 'r', headers: true).each do |row|
   # - Vine video URLs (vine.co/v/...)
   # - Vine profile URLs (vine.co/u/...)
   # - Tweet URLs (twitter.com/foobar/status/...)
-
   ts = Time.parse(row[0]).utc.iso8601
 
-  row[1..-1].each do |col|
-    case col
-    when %r{vine.co/v/.+} then
-      # add_video(col, ts)
-      nil
-    when %r{vine.co/u/.+} then
-      add_videos_from_user_profile(col, ts)
-    when %r{twitter.com/.+} then
-      add_videos_from_tweet(col)
-    when %r{\s*} then
-      nil
-    else
-      log.warn(format("Don't know how to handle input <%s>; skipping", col))
-    end
-  end
+  row[1..-1].each { |col| interpret_url(col, ts) }
 end
