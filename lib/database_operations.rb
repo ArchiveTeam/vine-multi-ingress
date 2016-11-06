@@ -1,17 +1,13 @@
 require 'securerandom'
-require 'logger'
 
 module DatabaseOperations
   def submit_video_with_retry(*args)
     submit_video(*args)
   rescue => e
     puts e
+    puts e.backtrace
     sleep(rand)
     retry
-  end
-
-  def logger
-    @logger ||= Logger.new($stderr).tap { |l| l.level = ENV['LOG_LEVEL'] || :debug }
   end
 
   def log(doc_id, resp)
