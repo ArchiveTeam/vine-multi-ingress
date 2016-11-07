@@ -12,7 +12,7 @@ loop do
   doc = Nokogiri.HTML(page)
   ing = Inkdroid::Ingester.new
 
-  (doc/'td a').select { |a| a['href'] =~ /[0-9]+\.txt/ }.each do |a|
+  (doc/'td a').select { |a| a['href'] =~ /[0-9]+\.txt$/ }.each do |a|
     url = URI.join(SOURCE, a['href']).to_s
     ing.perform(url)
   end
