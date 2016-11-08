@@ -28,7 +28,7 @@ module Inkdroid
     include Database
 
     def initialize
-      @pending_task_limit = 256
+      @pending_task_limit = 1000
     end
 
     def perform(io_or_str)
@@ -52,7 +52,7 @@ module Inkdroid
           Post.perform_async(tweet_id, uri.to_s, db, credentials)
 
           until can_take_more_tasks?
-            sleep 0.1
+            sleep 0.01
           end
         rescue URI::InvalidURIError
           # whatever, skip it and move on
