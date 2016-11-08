@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require_relative 'ingester'
+
+ing = Inkdroid::Ingester.new
+ing.perform($stdin)

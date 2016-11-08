@@ -3,14 +3,14 @@
 require 'nokogiri'
 require 'net/http'
 
-require_relative 'jobs'
+require_relative 'http_ingester'
 
 SOURCE = 'http://inkdroid.org/vine/'
 
 loop do
   page = `curl -s #{SOURCE}`
   doc = Nokogiri.HTML(page)
-  ing = Inkdroid::Ingester.new
+  ing = Inkdroid::HttpIngester.new
 
   (doc/'td a').select { |a| a['href'] =~ /[0-9]+\.txt$/ }.each do |a|
     url = URI.join(SOURCE, a['href']).to_s
