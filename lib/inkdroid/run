@@ -5,7 +5,7 @@ require 'net/http'
 
 require_relative 'http_ingester'
 
-SOURCE = 'http://inkdroid.org/vine/'
+SOURCE = 'http://vine.inkdroid.org/'
 
 loop do
   page = `curl -s #{SOURCE}`
